@@ -475,14 +475,14 @@
     { type: 'image', src: 'media/IMG_9815.jpg', thumb: 'media/thumbs/IMG_9815.jpg' },
     { type: 'image', src: 'media/IMG_9816.jpg', thumb: 'media/thumbs/IMG_9816.jpg' },
     { type: 'image', src: 'media/IMG_9817.jpg', thumb: 'media/thumbs/IMG_9817.jpg' },
-    { type: 'video', src: 'media/IMG_7492.mp4' },
-    { type: 'video', src: 'media/IMG_7510.mp4' },
-    { type: 'video', src: 'media/IMG_7512.mp4' },
-    { type: 'video', src: 'media/IMG_9807.mp4' },
-    { type: 'video', src: 'media/IMG_9810.mp4' },
-    { type: 'video', src: 'media/IMG_9811.mp4' },
-    { type: 'video', src: 'media/IMG_9813.mp4' },
-    { type: 'video', src: 'media/IMG_9814.mp4' },
+    { type: 'video', src: 'media/IMG_7492.mp4', poster: 'media/thumbs/IMG_7492_poster.jpg' },
+    { type: 'video', src: 'media/IMG_7510.mp4', poster: 'media/thumbs/IMG_7510_poster.jpg' },
+    { type: 'video', src: 'media/IMG_7512.mp4', poster: 'media/thumbs/IMG_7512_poster.jpg' },
+    { type: 'video', src: 'media/IMG_9807.mp4', poster: 'media/thumbs/IMG_9807_poster.jpg' },
+    { type: 'video', src: 'media/IMG_9810.mp4', poster: 'media/thumbs/IMG_9810_poster.jpg' },
+    { type: 'video', src: 'media/IMG_9811.mp4', poster: 'media/thumbs/IMG_9811_poster.jpg' },
+    { type: 'video', src: 'media/IMG_9813.mp4', poster: 'media/thumbs/IMG_9813_poster.jpg' },
+    { type: 'video', src: 'media/IMG_9814.mp4', poster: 'media/thumbs/IMG_9814_poster.jpg' },
   ];
 
   let currentIndex = 0;
@@ -504,6 +504,7 @@
     } else {
       const vid = document.createElement('video');
       vid.src = item.src;
+      vid.poster = item.poster || '';
       vid.muted = true;
       vid.preload = 'none';
       vid.style.pointerEvents = 'none';
