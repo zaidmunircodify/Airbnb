@@ -444,15 +444,15 @@
 <script>
   // ── MEDIA DATA ──
   const media = [
-    { type: 'image', src: 'media/IMG_7489.jpg' },
-    { type: 'image', src: 'media/IMG_7490.jpg' },
-    { type: 'image', src: 'media/IMG_7491.jpg' },
-    { type: 'image', src: 'media/IMG_9808.jpg' },
-    { type: 'image', src: 'media/IMG_9809.jpg' },
-    { type: 'image', src: 'media/IMG_9812.jpg' },
-    { type: 'image', src: 'media/IMG_9815.jpg' },
-    { type: 'image', src: 'media/IMG_9816.jpg' },
-    { type: 'image', src: 'media/IMG_9817.jpg' },
+    { type: 'image', src: 'media/IMG_7489.jpg', thumb: 'media/thumbs/IMG_7489.jpg' },
+    { type: 'image', src: 'media/IMG_7490.jpg', thumb: 'media/thumbs/IMG_7490.jpg' },
+    { type: 'image', src: 'media/IMG_7491.jpg', thumb: 'media/thumbs/IMG_7491.jpg' },
+    { type: 'image', src: 'media/IMG_9808.jpg', thumb: 'media/thumbs/IMG_9808.jpg' },
+    { type: 'image', src: 'media/IMG_9809.jpg', thumb: 'media/thumbs/IMG_9809.jpg' },
+    { type: 'image', src: 'media/IMG_9812.jpg', thumb: 'media/thumbs/IMG_9812.jpg' },
+    { type: 'image', src: 'media/IMG_9815.jpg', thumb: 'media/thumbs/IMG_9815.jpg' },
+    { type: 'image', src: 'media/IMG_9816.jpg', thumb: 'media/thumbs/IMG_9816.jpg' },
+    { type: 'image', src: 'media/IMG_9817.jpg', thumb: 'media/thumbs/IMG_9817.jpg' },
     { type: 'video', src: 'media/IMG_7492.mp4' },
     { type: 'video', src: 'media/IMG_7510.mp4' },
     { type: 'video', src: 'media/IMG_7512.mp4' },
@@ -474,15 +474,16 @@
 
     if (item.type === 'image') {
       const img = document.createElement('img');
-      img.src = item.src;
+      img.src = item.thumb || item.src;
       img.alt = 'Apartment photo';
       img.loading = 'lazy';
+      img.decoding = 'async';
       div.appendChild(img);
     } else {
       const vid = document.createElement('video');
       vid.src = item.src;
       vid.muted = true;
-      vid.preload = 'metadata';
+      vid.preload = 'none';
       vid.style.pointerEvents = 'none';
       div.appendChild(vid);
 
