@@ -79,21 +79,55 @@
       max-width: 600px;
     }
 
-    .price-badge {
-      display: inline-flex;
-      align-items: baseline;
-      gap: 6px;
-      background: var(--gold);
-      color: #111;
-      font-weight: 800;
-      padding: 10px 24px;
-      border-radius: 30px;
+    .pricing-table {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
       margin-bottom: 24px;
-      box-shadow: 0 4px 16px rgba(201,168,76,0.4);
     }
 
-    .price-amount {
-      font-size: 1.5rem;
+    .price-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(201,168,76,0.45);
+      border-radius: 16px;
+      padding: 14px 20px;
+      text-align: center;
+      min-width: 120px;
+      transition: transform 0.2s;
+    }
+
+    .price-card:hover { transform: translateY(-3px); }
+
+    .price-card.highlight {
+      background: var(--gold);
+      color: #111;
+      border-color: var(--gold);
+      box-shadow: 0 4px 16px rgba(201,168,76,0.45);
+    }
+
+    .price-card .pc-duration {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.75;
+      margin-bottom: 4px;
+    }
+
+    .price-card.highlight .pc-duration { opacity: 0.65; }
+
+    .price-card .pc-amount {
+      font-size: 1.55rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .price-card .pc-unit {
+      font-size: 0.75rem;
+      font-weight: 600;
+      opacity: 0.7;
+      margin-top: 3px;
     }
 
     .features {
@@ -389,9 +423,22 @@
       إقامة فاخرة بإطلالة رائعة على البحر في قلب طرابزون
     </p>
 
-    <div class="price-badge">
-      <span class="price-amount">$150</span>
-      <span data-ar="/ الليلة" data-en="/ Night">/ الليلة</span>
+    <div class="pricing-table">
+      <div class="price-card highlight">
+        <div class="pc-duration" data-ar="ليلة واحدة" data-en="1 Night">ليلة واحدة</div>
+        <div class="pc-amount">$150</div>
+        <div class="pc-unit" data-ar="/ الليلة" data-en="/ Night">/ الليلة</div>
+      </div>
+      <div class="price-card">
+        <div class="pc-duration" data-ar="10 ليالٍ+" data-en="10 Nights+">10 ليالٍ+</div>
+        <div class="pc-amount">$130</div>
+        <div class="pc-unit" data-ar="/ الليلة" data-en="/ Night">/ الليلة</div>
+      </div>
+      <div class="price-card">
+        <div class="pc-duration" data-ar="شهر كامل" data-en="Monthly">شهر كامل</div>
+        <div class="pc-amount">$110</div>
+        <div class="pc-unit" data-ar="/ الليلة" data-en="/ Night">/ الليلة</div>
+      </div>
     </div>
 
     <div class="features">
