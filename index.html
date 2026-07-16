@@ -781,10 +781,15 @@
     ['2026-07-18', '2026-07-25'],
   ];
 
+  function parseLocal(iso) {
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, m - 1, d).getTime();
+  }
+
   function isBooked(y, m, d) {
     const ts = new Date(y, m, d).getTime();
     return bookedRanges.some(([s, e]) =>
-      ts >= new Date(s).getTime() && ts <= new Date(e).getTime()
+      ts >= parseLocal(s) && ts <= parseLocal(e)
     );
   }
 
