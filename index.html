@@ -394,6 +394,115 @@
       50% { box-shadow: 0 4px 30px rgba(37,211,102,0.75); }
     }
 
+    /* ── MIN NIGHTS NOTE ── */
+    .min-nights {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: -10px;
+      margin-bottom: 18px;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── AVAILABILITY CALENDAR ── */
+    .cal-section { padding: 0 16px 40px; max-width: 860px; margin: 0 auto; }
+
+    .cal-wrap {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    }
+
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .cal-nav button {
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--primary);
+      transition: background 0.15s;
+    }
+
+    .cal-nav button:hover { background: #f0f0f0; }
+
+    .cal-month-label {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      text-align: center;
+    }
+
+    .cal-dow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #999;
+      padding: 4px 0 8px;
+      text-transform: uppercase;
+    }
+
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #333;
+      cursor: default;
+    }
+
+    .cal-day.empty { background: none; }
+
+    .cal-day.available { background: #eafaf2; color: #1a6b4a; }
+
+    .cal-day.booked {
+      background: #fde8e8;
+      color: #b91c1c;
+      text-decoration: line-through;
+      font-weight: 600;
+    }
+
+    .cal-day.today {
+      outline: 2px solid var(--primary);
+      outline-offset: -2px;
+      font-weight: 800;
+    }
+
+    .cal-legend {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 16px;
+      font-size: 0.82rem;
+      color: #666;
+    }
+
+    .cal-legend span { display: flex; align-items: center; gap: 6px; }
+
+    .cal-legend .dot {
+      width: 12px; height: 12px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .dot-avail { background: #eafaf2; border: 1px solid #6ee7b7; }
+    .dot-booked { background: #fde8e8; border: 1px solid #fca5a5; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 480px) {
       .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
@@ -441,6 +550,8 @@
       </div>
     </div>
 
+    <p class="min-nights" data-ar="🗓️ الحد الأدنى للحجز: 3 ليالٍ" data-en="🗓️ Minimum stay: 3 nights">🗓️ الحد الأدنى للحجز: 3 ليالٍ</p>
+
     <div class="features">
       <span class="feature-chip">🛏️ <span data-ar="3 غرف نوم" data-en="3 Bedrooms">3 غرف نوم</span></span>
       <span class="feature-chip">🚿 <span data-ar="2 حمام" data-en="2 Bathrooms">2 حمام</span></span>
@@ -457,6 +568,24 @@
 
 <div class="gallery-section">
   <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- AVAILABILITY CALENDAR -->
+<h2 class="section-title" data-ar="تقويم الحجز" data-en="Availability Calendar">تقويم الحجز</h2>
+
+<div class="cal-section">
+  <div class="cal-wrap">
+    <div class="cal-nav">
+      <button onclick="calPrev()">&#8249;</button>
+      <span class="cal-month-label" id="cal-label"></span>
+      <button onclick="calNext()">&#8250;</button>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <div class="cal-legend">
+      <span><i class="dot dot-avail"></i> <span data-ar="متاح" data-en="Available">متاح</span></span>
+      <span><i class="dot dot-booked"></i> <span data-ar="محجوز" data-en="Booked">محجوز</span></span>
+    </div>
+  </div>
 </div>
 
 <!-- MAP -->
@@ -645,6 +774,84 @@
       el.textContent = isEn ? el.dataset.en : el.dataset.ar;
     });
   }
+
+  // ── AVAILABILITY CALENDAR ──
+  // bookedRanges: array of [startISO, endISO] inclusive
+  const bookedRanges = [
+    ['2026-07-18', '2026-07-26'],
+  ];
+
+  function isBooked(y, m, d) {
+    const ts = new Date(y, m, d).getTime();
+    return bookedRanges.some(([s, e]) =>
+      ts >= new Date(s).getTime() && ts <= new Date(e).getTime()
+    );
+  }
+
+  const DOW_AR = ['أح','إث','ثل','أر','خم','جم','سب'];
+  const DOW_EN = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const MONTHS_AR = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const MONTHS_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  let calYear, calMonth;
+  (function() { const n = new Date(); calYear = n.getFullYear(); calMonth = n.getMonth(); })();
+
+  function renderCal() {
+    const isEn = document.body.classList.contains('en');
+    const today = new Date();
+    const dows = isEn ? DOW_EN : DOW_AR;
+    const monthNames = isEn ? MONTHS_EN : MONTHS_AR;
+
+    document.getElementById('cal-label').textContent =
+      monthNames[calMonth] + ' ' + calYear;
+
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+
+    // Day-of-week headers
+    dows.forEach(d => {
+      const h = document.createElement('div');
+      h.className = 'cal-dow';
+      h.textContent = d;
+      grid.appendChild(h);
+    });
+
+    const firstDay = new Date(calYear, calMonth, 1).getDay();
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+      const e = document.createElement('div');
+      e.className = 'cal-day empty';
+      grid.appendChild(e);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const el = document.createElement('div');
+      const booked = isBooked(calYear, calMonth, d);
+      const isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === d;
+      el.className = 'cal-day ' + (booked ? 'booked' : 'available') + (isToday ? ' today' : '');
+      el.textContent = d;
+      grid.appendChild(el);
+    }
+  }
+
+  function calPrev() {
+    calMonth--;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCal();
+  }
+
+  function calNext() {
+    calMonth++;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCal();
+  }
+
+  renderCal();
+
+  // Re-render calendar on language switch to update day/month names
+  const _origSetLang = setLang;
+  setLang = function(lang) { _origSetLang(lang); renderCal(); };
 
   // ── GOOGLE MAPS (update src when you have the link) ──
   const GOOGLE_MAPS_EMBED = 'https://maps.google.com/maps?q=40.9747523,39.8285478&output=embed';
